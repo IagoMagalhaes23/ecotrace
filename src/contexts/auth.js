@@ -18,26 +18,26 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const signin = (email, password) => {
+  const signin = (email, password, user) => {
     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
 
     const hasUser = usersStorage?.filter((user) => user.email === email);
 
     if (hasUser?.length) {
-      if (hasUser[0].email === email && hasUser[0].password === password) {
+      if (hasUser[0].email === email && hasUser[0].password === password && hasUser[0].user === user) {
         const token = Math.random().toString(36).substring(2);
         localStorage.setItem("user_token", JSON.stringify({ email, token }));
-        setUser({ email, password });
+        setUser({ email, password, user });
         return;
       } else {
-        return "E-mail ou senha incorretos";
+        return "E-mail, senha ou usuário incorretos";
       }
     } else {
       return "Usuário não cadastrado";
     }
   };
 
-  const signup = (email, password) => {
+  const signup = (email, password, user) => {
     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
 
     const hasUser = usersStorage?.filter((user) => user.email === email);
@@ -49,9 +49,9 @@ export const AuthProvider = ({ children }) => {
     let newUser;
 
     if (usersStorage) {
-      newUser = [...usersStorage, { email, password }];
+      newUser = [...usersStorage, { email, password, user }];
     } else {
-      newUser = [{ email, password }];
+      newUser = [{ email, password, user }];
     }
 
     localStorage.setItem("users_bd", JSON.stringify(newUser));

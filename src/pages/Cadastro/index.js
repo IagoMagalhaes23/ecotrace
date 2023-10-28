@@ -9,13 +9,14 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [emailConf, setEmailConf] = useState("");
   const [senha, setSenha] = useState("");
+  const [user, setUser] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const { signup } = useAuth();
 
   const handleSignup = () => {
-    if (!email | !emailConf | !senha) {
+    if (!email | !emailConf | !senha | !user) {
       setError("Preencha todos os campos");
       return;
     } else if (email !== emailConf) {
@@ -23,21 +24,21 @@ const Cadastro = () => {
       return;
     }
 
-    const res = signup(email, senha);
+    const res = signup(email, senha, user);
 
     if (res) {
       setError(res);
       return;
     }
 
-    alert("Usuário cadatrado com sucesso!");
+    alert("Usuário cadastrado com sucesso!");
     navigate("/");
   };
 
   return (
     <C.Container>
-      <C.Label>SISTEMA DE LOGIN</C.Label>
       <C.Content>
+        <C.Label>Cadastre-se</C.Label>
         <Input
           type="email"
           placeholder="Digite seu E-mail"
@@ -55,6 +56,12 @@ const Cadastro = () => {
           placeholder="Digite sua Senha"
           value={senha}
           onChange={(e) => [setSenha(e.target.value), setError("")]}
+        />
+        <Input
+          type="text"
+          placeholder="Digite seu nome de usuário no GitHub"
+          value={user}
+          onChange={(e) => [setUser(e.target.value), setError("")]}
         />
         <C.labelError>{error}</C.labelError>
         <Button Text="Inscrever-se" onClick={handleSignup} />
