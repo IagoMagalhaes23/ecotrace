@@ -1,11 +1,14 @@
 import GlobalStyle from './styles/global';
-import Login from './pages/Login'
+import RoutesApp from './routes';
+import { AuthProvider } from './contexts/auth';
 
 function App() {
   return (
     <div className='App'>
-      <div>oi</div>
-      <GlobalStyle/>
+      <AuthProvider>
+        <RoutesApp/>
+        <GlobalStyle/>
+      </AuthProvider>
     </div>
   );
 }
