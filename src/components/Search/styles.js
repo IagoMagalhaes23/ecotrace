@@ -7,7 +7,6 @@ export const Input = styled.input`
   border-radius: 5px;
   font-size: 16px;
   align-items: center;
-  justify-content: flex-end;
 
   background-color: #f0f2f5;
   border: none;

@@ -13,9 +13,14 @@ const Home = () => {
   return (
     <C.Container>
       <Navbar/>
-      <Search/>
-      <Button/>
-      <Button/>
+      <Search
+        type="text"
+        placeholder="Digite o username do Github para buscar"
+        // value={}
+        // onChange={(e) => [setEmail(e.target.value), setError("")]}
+      />
+      <Button Text="Pesquisar" /*onClick={handleLogin}*//>
+      <Button Text="Histórico" /*onClick={handleLogin}*//>
     </C.Container>
   );
 };
