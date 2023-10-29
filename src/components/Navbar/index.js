@@ -1,37 +1,26 @@
-import { useRef } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
-import "../Styles/main.css";
+import React, { useState } from 'react';
+import './styles.css'; // Import your CSS file if you have one
+import Input from '../Input';
 
-function Navbar() {
-	const navRef = useRef();
+const Navbar = () => {
 
-	const showNavbar = () => {
-		navRef.current.classList.toggle(
-			"responsive_nav"
-		);
-	};
+    const [searchValue, setSearchValue] = useState('');
 
-	return (
-		<header>
-			<h3>LOGO</h3>
-			<nav ref={navRef}>
-				<a href="/#">Home</a>
-				<a href="/#">My work</a>
-				<a href="/#">Blog</a>
-				<a href="/#">About me</a>
-				<button
-					className="nav-btn nav-close-btn"
-					onClick={showNavbar}>
-					<FaTimes />
-				</button>
-			</nav>
-			<button
-				className="nav-btn"
-				onClick={showNavbar}>
-				<FaBars />
-			</button>
-		</header>
-	);
-}
+    const handleSearchChange = (event) => {
+      setSearchValue(event.target.value);
+    };
+  
+    const handleSearch = () => {
+      // Perform search logic here
+      console.log('Search triggered with value:', searchValue);
+    };
+
+  return (
+      <div className="topbar">
+        <div className="topbar-item">Logo</div>
+        <div className="topbar-item">Nome do usuario</div>
+      </div>
+  );
+};
 
 export default Navbar;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import Input from "../../components/Input";
+import { Search } from "../../components/Search";
 import Navbar from "../../components/Navbar";
 import useAuth from "../../hooks/useAuth";
 import * as C from "./styles";
@@ -13,10 +13,7 @@ const Home = () => {
   return (
     <C.Container>
       <Navbar/>
-      <C.Title>Home</C.Title>
-      <Button Text="Sair" onClick={() => [signout(), navigate("/")]}>
-        Sair
-      </Button>
+      <Search/>
     </C.Container>
   );
 };
