@@ -64,7 +64,20 @@ def login():
     else:
         return jsonify({'message': 'Credenciais inválidas'}), 401
 	
-print(readData())
+# print(readData())
+
+@app.route('/pesquisar', methods=['POST'])
+def pesquisar():
+    data = request.get_json()
+    print(data)
+    pesquisa = data['pesquisa']
+    response = requests.get('https://api.github.com/users/{}/repos'.format(pesquisa))
+    data = response.json()
+    data = json.dumps(data)
+    lista = json.loads(data)
+    print(lista)
+
+    return lista
 
 if __name__ == '__main__':
 	app.run(debug=True)
