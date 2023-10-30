@@ -19,6 +19,10 @@ const RoutesApp = () => {
     <BrowserRouter>
       <Fragment>
         <Routes>
+        <Route exact path="/historico" element={<Private Item={Historico} />} />
+          <Route path="/" element={<Login />} />
+          <Route exact path="/repositorios" element={<Private Item={Repositorios} />} />
+          <Route path="/" element={<Login />} />
           <Route exact path="/busca" element={<Private Item={Busca} />} />
           <Route path="/" element={<Login />} />
           <Route exact path="/cadastro" element={<Cadastro />} />

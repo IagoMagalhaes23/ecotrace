@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = (email, password, user) => {
     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
-
+    
     const hasUser = usersStorage?.filter((user) => user.email === email);
 
     if (hasUser?.length) {
@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem("users_bd", JSON.stringify(newUser));
-
     return;
   };
 

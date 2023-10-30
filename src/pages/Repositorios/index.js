@@ -6,13 +6,13 @@ import Navbar from "../../components/Navbar";
 import useAuth from "../../hooks/useAuth";
 import * as C from "./styles";
 
-const Home = () => {
-  const { signout } = useAuth();
+const Repositorios = () => {
+  const { signout, user } = useAuth();
   const navigate = useNavigate();
 
   return (
     <C.Container>
-      <Navbar/>
+      <Navbar  user={user.user} />
       <Search
         type="text"
         placeholder="Digite o username do Github para buscar"
@@ -25,4 +25,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Repositorios;

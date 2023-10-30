@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
-import './styles.css'; // Import your CSS file if you have one
-import Input from '../Input';
+import React, { useEffect, useState } from 'react';
+import './styles.css';
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
+  const [usuario, setUsuario] = useState({
+    nome: "",
+    foto: "",
+    link: ""
+  });
 
-    const [searchValue, setSearchValue] = useState('');
-
-    const handleSearchChange = (event) => {
-      setSearchValue(event.target.value);
-    };
-  
-    const handleSearch = () => {
-      // Perform search logic here
-      console.log('Search triggered with value:', searchValue);
-    };
+  useEffect(() => {
+    fetch("https://api.github.com/users/"+user).then((res) =>
+        res.json().then((data) => {
+            // Setting a data from api
+            setUsuario({
+                nome: data.login,
+                foto: data.avatar_url,
+                link: data.html_url
+            });
+        })
+    );
+}, []);
 
   return (
       <div className="topbar">
-        <div className="topbar-item">Logo</div>
-        <div className="topbar-item">Nome do usuario</div>
+        <div className="topbar-item">
+          <img src={usuario.foto} width="50vw"/>
+        </div>
+        <div className="topbar-item">
+          <a href='/usuario'>{usuario.nome}</a>
+        </div>
       </div>
   );
 };
