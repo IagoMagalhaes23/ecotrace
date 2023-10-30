@@ -54,14 +54,12 @@ def login():
     email = data['email']
     password = data['password']
     username = data['username']
-    print(email)
-    print(password)
 
     conn = get_db_connection()
     cursor = conn.execute('SELECT * FROM users WHERE email = ? and password = ?', (email, password))
     user = cursor.fetchone()
     
-    if user and check_password_hash(user.password, password):
+    if user['email'] == email and user['password'] == password:
         return jsonify({'message': 'Login bem-sucedido'}), 200
     else:
         return jsonify({'message': 'Credenciais inválidas'}), 401

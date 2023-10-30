@@ -76,27 +76,28 @@ export const AuthProvider = ({ children }) => {
       axios.post('/cadastros', formData)
       .then(response => {
         console.log('Resposta da API:', response.data);
+        const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+    
+        const hasUser = usersStorage?.filter((user) => user.email === email);
+
+        let newUser;
+
+        if (usersStorage) {
+          newUser = [...usersStorage, { email, password, user }];
+        } else {
+          newUser = [{ email, password, user }];
+        }
+
+        localStorage.setItem("users_bd", JSON.stringify(newUser));
+
+        return;
       })
       .catch(error => {
         console.error('Erro ao enviar dados:', error);
       });
     
 
-    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
     
-    const hasUser = usersStorage?.filter((user) => user.email === email);
-
-    let newUser;
-
-    if (usersStorage) {
-      newUser = [...usersStorage, { email, password, user }];
-    } else {
-      newUser = [{ email, password, user }];
-    }
-
-    localStorage.setItem("users_bd", JSON.stringify(newUser));
-
-    return;
 
     // if (hasUser?.length) {
     //   return "Já tem uma conta com esse E-mail";
