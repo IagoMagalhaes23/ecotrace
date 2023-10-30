@@ -4,6 +4,11 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    userGitHub: ''
+  });
 
   useEffect(() => {
     const userToken = localStorage.getItem("user_token");
@@ -19,6 +24,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signin = (email, password, user) => {
+    fetch('/login') // Substitua pela URL da sua API
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error('Erro ao buscar os dados:', error));
     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
 
     const hasUser = usersStorage?.filter((user) => user.email === email);
