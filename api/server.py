@@ -68,7 +68,7 @@ def login():
 
 @app.route('/pesquisar', methods=['POST'])
 def pesquisar():
-    data = request.get_json()
+    data = request.form['pesquisa']
     print(data)
     pesquisa = data['pesquisa']
     response = requests.get('https://api.github.com/users/{}/repos'.format(pesquisa))
