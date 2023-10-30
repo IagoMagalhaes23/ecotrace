@@ -1,43 +1,72 @@
 # Import flask and datetime module for showing date and time
 from flask import Flask, request, jsonify
+from werkzeug.security import check_password_hash
 import secrets
-import datetime
+import requests
+import sqlite3
+import json
 
-x = datetime.datetime.now()
-
-# Initializing flask app
 app = Flask(__name__)
+connection = sqlite3.connect("data.db", check_same_thread=False)
 
+cursor = connection.cursor()
+cursor.execute("create table  IF NOT EXISTS users (email text, password text, username text, id text, followers text, following text, public_repos text, bio text, emailGitHub text, twitter_username text, company text, blog text)")
 
-# Simulação de um banco de dados de usuários
-users = [
-    ['usuario1', 'senha1', 'i'],
-    ['usuario2', 'senha2', 'j']
-]
+DATABASE = 'data.db'
 
-# Dicionário para armazenar os tokens
-tokens = {}
+def get_db_connection():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
 
+def readData():
+    '''
+        Função para ler valores do banco de dados
+    '''
+    cursor = connection.cursor()
+    cursor.execute("select * from users")
+    dados = cursor.fetchall()
+    return list(dados)
+
+@app.route('/cadastros', methods=['POST'])
+def cadastrar_usuario():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+    username = data['username']
+
+    response = requests.get('https://api.github.com/users/{}'.format(username))
+    data = response.json()
+    data = json.dumps(data)
+    lista = json.loads(data)
+
+    dados = [email, password, username, lista['id'], lista['followers'], lista['following'], lista['public_repos'], lista['bio'], lista['email'], lista['twitter_username'], lista['company'], lista['blog']]
+
+    cursor = connection.cursor()
+    cursor.execute("insert into users values (?,?,?,?,?,?,?,?,?,?,?,?)", dados)
+    connection.commit()
+
+    return jsonify({'message': 'Usuário cadastrado com sucesso!'}), 201
 
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    username = data['username']
+    email = data['email']
     password = data['password']
-    name = data['user']
+    username = data['username']
+    print(email)
+    print(password)
 
-    if username in users and users[username] == password:
-        token = secrets.token_hex(16)
-        tokens[token] = username
-        return jsonify({'token': token}), 200
+    conn = get_db_connection()
+    cursor = conn.execute('SELECT * FROM users WHERE email = ? and password = ?', (email, password))
+    user = cursor.fetchone()
+    
+    if user and check_password_hash(user.password, password):
+        return jsonify({'message': 'Login bem-sucedido'}), 200
     else:
-        return jsonify({'error': 'Credenciais inválidas'}), 401
-# Route for seeing a data
-# @app.route('/signup')
-# def signup():
+        return jsonify({'message': 'Credenciais inválidas'}), 401
 	
+print(readData())
 
-	
-# Running app
 if __name__ == '__main__':
 	app.run(debug=True)
